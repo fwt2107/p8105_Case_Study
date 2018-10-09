@@ -1,0 +1,17 @@
+---
+title: "Case_Study"
+author: "Felix Tran"
+date: "October 9, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Count vs. table functions
+- count gives you counts of values of a variable
+- table function gives you a "table" class variable which is a pain to work with
+- just use count()
+
+
