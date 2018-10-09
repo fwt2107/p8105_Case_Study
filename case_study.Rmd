@@ -1,0 +1,70 @@
+---
+title: "Case Study"
+author: "Jeff Goldsmith"
+date: "10/9/2018"
+output: github_document
+---
+
+```{r, include = FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
+
+Load the data.
+
+```{r}
+library(p8105.datasets)
+data(nyc_airbnb)
+```
+
+
+Data cleaning - Remove/clean some things
+```{r}
+nyc_airbnb <- nyc_airbnb %>% 
+  mutate(stars = review_scores_location / 2) %>% 
+  rename(boro = neighbourhood_group)
+
+nyc_airbnb %>% 
+  count(boro)
+
+nyc_airbnb %>% 
+  count(boro, neighbourhood) %>% 
+  View
+```
+
+## Some questions
+* Does rating differ by room type, neighborhood, or both?
+* How does price relate to other variables?
+* Where are the locations of rentals? Do locations differ by rental type?
+* Where are the cheapest places? Most expensive?
+* Most unfilled days?
+* Which area has highest density?
+* Host characteristics?
+
+How many ppl have more than 1 listing?
+```{r}
+nyc_airbnb %>% 
+  count(host_id, boro) %>% 
+  filter(n > 1) %>% 
+  count(boro)
+```
+
+Average rating by neighborhood?
+```{r}
+nyc_airbnb %>% 
+  group_by(neighbourhood, boro) %>% 
+  summarize(avg_rate = mean(stars, na.rm = T)) %>% 
+  arrange(desc(avg_rate)) %>% 
+  ungroup() %>% 
+  group_by(boro) %>% 
+  summarize(boro_rate = mean(avg_rate, na.rm = T)) 
+  
+```
+
